@@ -7,12 +7,14 @@ export default function Home() {
   const [code, setCode] = useState('');
   const [analysis, setAnalysis] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(''); // New dedicated error state
 
   const handleAnalyze = async () => {
     if (!code.trim()) return;
     
     setLoading(true);
     setAnalysis('');
+    setError(''); // Clear any previous errors
 
     try {
       const response = await fetch('/api/analyze', {
@@ -28,22 +30,24 @@ export default function Home() {
       if (data.result) {
         setAnalysis(data.result);
       } else {
-        setAnalysis('Error: ' + (data.error || 'Something went wrong.'));
+        // Route API errors to the new error state
+        setError(data.error || 'Something went wrong on the server.');
       }
-    } catch (error) {
-      setAnalysis('Failed to connect to the server. Please try again.');
+    } catch (err) {
+      // Route network errors to the new error state
+      setError('Failed to connect to the server. Please check your internet connection and try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-gray-900 text-gray-100 p-8 font-sans">
+    <main className="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
-        <header className="text-center space-y-2 mt-8">
-          <h1 className="text-4xl font-bold tracking-tight text-blue-400">AI Code Tutor</h1>
-          <p className="text-gray-400 text-lg">Paste code you want to understand, not just copy.</p>
+        <header className="text-center space-y-2 mt-4 sm:mt-8">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-blue-400">AI Code Tutor</h1>
+          <p className="text-gray-400 text-base sm:text-lg">Paste code you want to understand, not just copy.</p>
         </header>
 
         <section className="space-y-4 shadow-xl">
@@ -63,9 +67,17 @@ export default function Home() {
           </button>
         </section>
 
-        {analysis && (
-          <section className="bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
-            {/* The magic happens here with 'prose prose-invert' */}
+        {/* Dedicated Error Banner */}
+        {error && (
+          <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg flex items-center shadow-md">
+            <span className="mr-2">⚠️</span>
+            <p>{error}</p>
+          </div>
+        )}
+
+        {/* Analysis Output Container */}
+        {analysis && !error && (
+          <section className="bg-gray-800 p-4 sm:p-8 rounded-lg border border-gray-700 shadow-xl overflow-x-auto">
             <div className="prose prose-invert prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-700 max-w-none">
               <ReactMarkdown>{analysis}</ReactMarkdown>
             </div>
