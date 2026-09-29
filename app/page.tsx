@@ -277,8 +277,8 @@ export default function Home() {
       <main className="flex-1 flex flex-col min-w-0 h-screen relative bg-gray-900">
         
         {/* Top Navbar with Sidebar Re-open Button */}
-        <header className="flex items-center justify-between p-3 border-b border-gray-800 bg-gray-950 flex-shrink-0">
-          <div className="flex items-center space-x-3">
+        <header className="flex items-center justify-between p-5 border-b border-gray-800 bg-gray-950 flex-shrink-0">
+          <div className="flex items-center space-x-4">
             {!isSidebarOpen && (
               <button
                 onClick={() => setIsSidebarOpen(true)}
@@ -286,12 +286,12 @@ export default function Home() {
                 title="Open Sidebar"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                 </svg>
                 <span className="text-xs hidden sm:inline">Chats</span>
               </button>
             )}
-            <h1 className="font-bold text-lg text-blue-300">AI Code Tutor 🧑🏻‍🏫</h1>
+            <h1 className="font-bold text-xl text-lime-300">AI Code Tutor 🧑🏻‍🏫</h1>
           </div>
         </header>
 
